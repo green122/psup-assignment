@@ -1,9 +1,4 @@
-<table
-  *ngIf="table.length"
-  mat-table
-  [dataSource]="table"
-  class="mat-elevation-z8"
->
+<table *ngIf="table" mat-table [dataSource]="table" class="mat-elevation-z8">
   <ng-container
     *ngFor="let column of columns | keyvalue"
     [matColumnDef]="column.value"

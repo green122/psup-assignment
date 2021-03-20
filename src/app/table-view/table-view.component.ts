@@ -1,15 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { AppTableRec, Names } from '../api/types';
-import { DataFetcherService } from '../services/data-fetcher.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { AppTableRec, Names, TAppData } from '../config/config';
 
 @Component({
   selector: 'app-table-view',
   templateUrl: './table-view.component.html',
   styleUrls: ['./table-view.component.scss'],
 })
-export class TableViewComponent implements OnInit {
-  table: AppTableRec[] = [];
+export class TableViewComponent {
+  @Input() table: TAppData | null = null;
   showColumns: Array<keyof AppTableRec> = [
     'productName',
     'productDescription',
@@ -18,10 +16,4 @@ export class TableViewComponent implements OnInit {
     'size',
   ];
   columns = Names;
-
-  constructor(private fetcher: DataFetcherService) {}
-
-  ngOnInit() {
-    this.fetcher.getData().subscribe((data) => (this.table = data));
-  }
 }
