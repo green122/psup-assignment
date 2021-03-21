@@ -11,6 +11,10 @@ For plugging in filter service you should call `filterDataStream` method and pas
 
 Nothing special here. `app` component consists of `filter-panel` and `table-view` components. `filter-panel` has a form for creating a new filter and is injected with a filter service. `table-view` gets a table data right from `app` component.
 
+### Tests
+
+A few test were added for the main filter service functionality
+
 ### Configuration and flexibility.
 
 There is a config file that provides a configuration of the API response with a types and fields renaming. As a second option we may get rid of the types and works with the abstract data, but as a result we'd have some ugly names of the table like image_additional. So I suppose that it'd be better to have more detailed description. We may have a lot of type definitions and switch between them by assigning
