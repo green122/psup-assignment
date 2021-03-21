@@ -10,7 +10,7 @@ import { FilterService } from './services/filter.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  table: Observable<TAppData> | null = null;
+  table$: Observable<TAppData> | null = null;
 
   constructor(
     private fetcher: DataFetcherService<TApiData, TAppData>,
@@ -18,8 +18,8 @@ export class AppComponent {
   ) {}
 
   ngOnInit() {
-    this.table = this.filterService.filterDataStream(
+    this.table$ = this.filterService.filterDataStream(
       this.fetcher.getData(serializer)
-    ) as Observable<TAppData>;
+    );
   }
 }

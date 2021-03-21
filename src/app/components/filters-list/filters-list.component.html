@@ -1,0 +1,7 @@
+<div class="label">Apllied filters:</div>
+<div *ngIf="!!filters?.length" class="filters-list">
+  <div *ngFor="let filter of filters" class="filter-row">
+    {{ filter.filterView }}
+    <span (click)="onRemoveFilter(filter.id)" class="remove-filter">x</span>
+  </div>
+</div>

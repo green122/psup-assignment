@@ -1,23 +1,28 @@
 <div class="filter-panel">
-  <form [formGroup]="filterForm" (ngSubmit)="onSubmit()">
-    <mat-label>Choose an option</mat-label>
-    <mat-select
-      formControlName="field"
-      required
-      (selectionChange)="onSelectField()"
-    >
-      <mat-option *ngFor="let value of showColumns" [value]="value">{{
-        value
-      }}</mat-option>
-    </mat-select>
-
-    <ng-container *ngIf="operators.length">
-      <mat-label>Choose an operator</mat-label>
-      <mat-select formControlName="operator">
-        <mat-option *ngFor="let operator of operators" [value]="operator">{{
-          operator
+  <form class="filter-form" [formGroup]="filterForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Choose a field</mat-label>
+      <mat-select
+        formControlName="field"
+        placeholder="Select a field"
+        required
+        (selectionChange)="onSelectField()"
+      >
+        <mat-option *ngFor="let value of showColumns" [value]="value">{{
+          value
         }}</mat-option>
       </mat-select>
+    </mat-form-field>
+
+    <ng-container *ngIf="operators.length">
+      <mat-form-field appearance="fill">
+        <mat-label>Choose an operator</mat-label>
+        <mat-select placeholder="Select an operator" formControlName="operator">
+          <mat-option *ngFor="let operator of operators" [value]="operator">{{
+            operator
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </ng-container>
 
     <ng-container *ngIf="isFormFieldSelected('operator')">
@@ -25,7 +30,11 @@
         <mat-label>Input a value</mat-label>
         <input matInput type="text" formControlName="value" />
       </mat-form-field>
-      <button mat-button class="button" type="submit">Purchase</button>
+      <button mat-button class="button" type="submit">Apply filter</button>
     </ng-container>
   </form>
+  <app-filters-list
+    (removeFilter)="removeFilter($event)"
+    [filters]="filtersList | async"
+  ></app-filters-list>
 </div>

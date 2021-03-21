@@ -1,15 +1,21 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { TTypes } from '../types/common';
+import { genRandomID } from '../utils/common';
+import {
+  applyFiltersToData,
+  serializeFilters,
+  TFilterFunction,
+  TFilterRec,
+  TFilters,
+  TValueType,
+} from './utils';
 
-type TTypes = 'string' | 'number';
 type TTypesMap = {
   string: string;
   number: number;
 };
-
-type TValueType = string | number;
-type TFilterFunction = (value: TValueType) => boolean;
 
 type TOperateFilterFunction<T extends unknown> = (
   operateValue: T
@@ -36,29 +42,6 @@ const filtersFunctions: FiltersByType<TTypes> = {
   },
 };
 
-interface TFilterRec {
-  id: string;
-  operateValue: TValueType;
-  operator: string;
-  fn: TFilterFunction;
-}
-
-export interface FilterViewRec {
-  id: string;
-  filterView: string;
-}
-
-interface TFilters {
-  [field: string]: TFilterRec[];
-}
-
-const applyFilterFunctions = (
-  value: TValueType,
-  filtersArr: TFilterFunction[]
-) => filtersArr.every((filterFn) => filterFn(value));
-
-const serializeFilters = (filters: TFilters) => {};
-
 @Injectable({
   providedIn: 'root',
 })
@@ -78,66 +61,50 @@ export class FilterService {
   }
 
   getSerializedFilters$() {
-    return this.getFilters$().pipe(
-      map((filters) => {
-        const filterViewRec = Object.entries(filters).reduce<FilterViewRec[]>(
-          (acc, [key, filters]) => {
-            const serializedStr: FilterViewRec[] = [];
-            filters.forEach((filter) =>
-              serializedStr.push({
-                id: filter.id,
-                filterView: `${key} ${filter.operator} ${filter.operateValue}`,
-              })
-            );
-            return acc.concat(serializedStr);
-          },
-          []
-        );
-        return filterViewRec;
-      })
-    );
+    return this.getFilters$().pipe(map(serializeFilters));
   }
 
+  removeFilterById(id: string) {
+    const value = this.filters$.getValue();
+
+    Object.keys(value).forEach((key) => {
+      value[key] = value[key].filter((filterRec) => filterRec.id !== id);
+    });
+
+    this.filters$.next(value);
+  }
+
+  // TODO: make more type safe
   filterDataStream<T extends Array<Record<TValueType, unknown>>>(
     stream$: Observable<T>
   ) {
     return combineLatest([this.filters$, stream$]).pipe(
-      map(([filters, data]) => {
-        const keys = Object.keys(filters);
-        const newData = data.filter((rec) =>
-          keys.every((key) =>
-            key in rec
-              ? applyFilterFunctions(
-                  rec[key] as TValueType,
-                  filters[key].map((filter) => filter.fn)
-                )
-              : true
-          )
-        );
-        return newData;
-      })
+      map(([filters, data]) => applyFiltersToData(filters, data))
     );
   }
 
-  addFilter<T>({
-    fieldValue,
+  addFilter({
+    id = genRandomID(),
+    type,
     field,
     operator,
     value,
   }: {
-    fieldValue: T;
+    id?: string;
+    type: TTypes;
     field: string;
     operator: string;
     value: string;
   }) {
-    const type = typeof fieldValue as TTypes;
+    const castedValue = type === 'number' ? Number(value) : value;
+
     const filters = this.filters$.getValue();
 
     const filterFunc = filtersFunctions[type][operator];
     const filterRec: TFilterRec = {
-      id: Date.now().toString(),
+      id,
       operator,
-      operateValue: value,
+      operateValue: castedValue,
       fn: filterFunc(value),
     };
 

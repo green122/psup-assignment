@@ -1,12 +1,18 @@
 .cell {
-    font-size: 11px;
+  font-size: 11px;
 }
 
-.mat-column-productName {
-    width: 25%;
+.mat-cell,
+.mat-header-cell {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
-.mat-column-productDescription {
-    width: 35%;
-    padding-right: 10px;
+mat-paginator {
+  background: none;
+}
+
+.mat-table {
+  min-height: 100%;
+  width: 100%;
 }

@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSelectChange } from '@angular/material/select';
 import { Observable } from 'rxjs';
 import { showColumns, TAppData, TField } from 'src/app/config/config';
-import { FilterService, FilterViewRec } from 'src/app/services/filter.service';
+import { FilterService } from 'src/app/services/filter.service';
+import { FilterViewRec } from 'src/app/types/common';
+import { getTypeOfField } from 'src/app/utils/common';
 
 @Component({
   selector: 'app-filter-panel',
@@ -53,12 +54,18 @@ export class FilterPanelComponent implements OnInit {
     if (!this.table) return;
 
     this.filterService.addFilter({
-      fieldValue: this.table[0][field as TField],
+      type: getTypeOfField(this.table, field),
       value,
       operator,
       field,
     });
 
     this.filterForm.reset();
+    this.filterForm.controls.field.setErrors(null);
+    this.operators = [];
+  }
+
+  removeFilter(id: string) {
+    this.filterService.removeFilterById(id);
   }
 }

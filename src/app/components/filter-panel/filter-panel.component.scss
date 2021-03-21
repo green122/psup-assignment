@@ -1,5 +1,20 @@
 .filter-panel {
-  background: lightblue;
-  width: 100%;
+  background: #fcfcfc;
+  width: 300px;
+  padding: 20px;
   height: 100%;
+}
+
+.mat-form-field {
+  display: block;
+}
+
+.mat-button {
+  width: 100%;
+  padding: 15px;
+  background: #d8ecec;
+}
+
+.filter-form {
+  margin-bottom: 30px;
 }
