@@ -74,3 +74,13 @@ export const serializer = (data: TApiData): TAppData =>
     color: rec.color,
     url: rec.url,
   }));
+
+export type TField = keyof AppTableRec;
+
+export const showColumns: Array<TField> = [
+  'productName',
+  'productDescription',
+  'price',
+  'quantity',
+  'size',
+];

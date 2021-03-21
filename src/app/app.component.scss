@@ -1,11 +1,14 @@
 .content {
-    display: flex;
+  display: flex;
+  width: 85%;
 }
 
-.side {
-    width: 15%;
+.main-content {
+  display: flex;
+  flex-direction: row;
 }
 
-.content {
-    width: 85%;
+app-filter-panel {
+  display: block;
+  width: 100%;
 }

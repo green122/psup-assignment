@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AppTableRec, Names, TAppData } from '../config/config';
+import { AppTableRec, Names, showColumns, TAppData } from '../../config/config';
 
 @Component({
   selector: 'app-table-view',
@@ -8,12 +8,6 @@ import { AppTableRec, Names, TAppData } from '../config/config';
 })
 export class TableViewComponent {
   @Input() table: TAppData | null = null;
-  showColumns: Array<keyof AppTableRec> = [
-    'productName',
-    'productDescription',
-    'price',
-    'quantity',
-    'size',
-  ];
+  showColumns = showColumns;
   columns = Names;
 }

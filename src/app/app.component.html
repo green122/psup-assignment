@@ -2,8 +2,8 @@
 <div class="toolbar" role="banner"></div>
 
 <div class="content" role="main">
-  <div class="side"></div>
   <div class="main-content">
+    <app-filter-panel [table]="table | async"></app-filter-panel>
     <app-table-view [table]="table | async"></app-table-view>
   </div>
 </div>
