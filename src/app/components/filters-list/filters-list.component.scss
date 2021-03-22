@@ -11,8 +11,8 @@
   width: 100%;
   padding: 10px 20px 10px 10px;
   background: white;
-  box-shadow: 2px 2px 3px 0px darkgrey;
   box-sizing: border-box;
+  border: 1px solid lightgray;
   position: relative;
 
   &:not(:last-child) {
