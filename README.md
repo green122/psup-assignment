@@ -1,5 +1,14 @@
 # Product Sup test assignment
 
+## Install
+
+go to the project directory
+run `npm i`
+make sure that angular CLI utilite is installed.
+If not - run `npm install -g @angular/cli`
+
+Run `ng serve` inside the project directory
+
 ## Notes
 
 The core of the logic is inside `FilterService`. We have filters functions map based on the type of the field, that we infer in a runtime.
