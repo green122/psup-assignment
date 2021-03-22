@@ -17,7 +17,12 @@
     <ng-container *ngIf="operators.length">
       <mat-form-field appearance="fill">
         <mat-label>Choose an operator</mat-label>
-        <mat-select placeholder="Select an operator" formControlName="operator">
+        <mat-select
+          placeholder="Select an operator"
+          formControlName="operator"
+          required
+          (selectionChange)="onSelectOperator()"
+        >
           <mat-option *ngFor="let operator of operators" [value]="operator">{{
             operator
           }}</mat-option>
@@ -26,11 +31,21 @@
     </ng-container>
 
     <ng-container *ngIf="isFormFieldSelected('operator')">
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="value-input">
         <mat-label>Input a value</mat-label>
         <input matInput type="text" formControlName="value" />
+        <div *ngIf="isValueControlValid()" class="error">
+          {{ getErrorMessage() }}
+        </div>
       </mat-form-field>
-      <button mat-button class="button" type="submit">Apply filter</button>
+      <button
+        [disabled]="filterForm.invalid"
+        mat-button
+        class="button"
+        type="submit"
+      >
+        Apply filter
+      </button>
     </ng-container>
   </form>
   <app-filters-list

@@ -50,9 +50,7 @@ export class FilterService {
 
   constructor() {}
 
-  getFilters<T>(field: T) {
-    // TODO: invent smthg better
-    const type = typeof field as TTypes;
+  getFilters(type: TTypes) {
     return Object.keys(filtersFunctions[type]);
   }
 
